@@ -1,25 +1,33 @@
 #           Author: Kauan Schaeffer             #
-# Description: Program to measure the temper... #
+# Description: Program to collect the temper... #
 # ...ature and humidty, sending data to Thing.. #
-# ..speak and turning the relay on/off          #
+# ..speak server                                #
 
-from wifi_lib import connect
-import urequests
+# Imports area
+from measurer_lib import measure
+from wifi_lib import connect, send_data
+import time
 
-print("Connecting...")
-station = connect("Oi_DB09", "zncp32Fa")
-if not station.isconnected():
-    print("Connection failed!")
-else:
-    print("Successfully connected!")
-    print("Opening API endpoint...")
-    response = urequests.get("http://api.thingspeak.com/update?api_key=HYFN2WWEGLEXE3IM&field1=3")
-    if response.text:
-        print("Success!")
-        print("Page response: " + response.text)
-    station.disconnect()
+result = connect("Oi_DB09", "zncp32Fa") #Connect to WIFI
 
+if not result.isconnected(): #If connection fail abort program
+    print('Connection failed!')
+    print('Aborting execution...')
+elif result.isconnected():
+    print('Connected successfully!\n')
+    while True: # While true, keep measuring
+        c_temperature, c_humidity = measure()
         
+        print('========= Temperature Data =========')
+        print("  Temperature = {} | Humidity = {}".format(c_temperature, c_humidity))
+        print('====================================\n')
+        
+        send_data(c_temperature, c_humidity) #Send data to server
+        time.sleep(5)
+        print('\n\n')
+        
+    
+
 
 
 
