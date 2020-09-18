@@ -1,3 +1,6 @@
+#           Author: Kauan Schaeffer             #
+# Description: Program to test relay connection #
+
 import machine
 import time
 

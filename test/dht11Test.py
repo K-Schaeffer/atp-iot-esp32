@@ -1,3 +1,6 @@
+#           Author: Kauan Schaeffer             #
+# Description: Program to test DHT11 connection #
+
 import dht
 import machine
 import time
